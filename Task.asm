@@ -1,55 +1,98 @@
-.MODEL SMALL
-.STACK 100H
-.DATA 
-MSG DB 0AH,0DH, 'THE SUM OF '  
+.model small
+.stack 100h
+.data   
 
-MSG1 DB 'AND'        
+msg db 'THE SUM OF$'
+msg1 db ' $'
+msg2 db 'AND$'
+msg3 db 'IS$'
 
-SUM DB ?,'$'
- 
-.CODE
-MAIN PROC
-     
-     MOV AX,@DATA
-     MOV DS,AX
-     
-     MOV AH,2
-     MOV DL,'?'
-     INT 21H
-     
-     MOV AH,1
-     INT 21H 
-     MOV CL,AL
-           
-     
-     INT 21H 
-     MOV CH,AL
-     
-   
-              
-     ADD AL,CL
-     SUB AL,30H
-     MOV SUM,AL
-     
-     LEA DX,MSG
-     MOV AH,9
-     INT 21H 
-     
-     MOV AH,2
-     MOV CL,AL
-     INT 21H 
-     
-     LEA DX,MSG1
-     MOV AH,9
-     INT 21H 
-     
-     
-    
-     
-    
-     
-     MOV AH,4CH
-     INT 21H
-     
-    MAIN ENDP
-END MAIN
+.code
+main proc
+
+ mov dl,'?'
+ mov ah,2
+ int 21h
+
+
+ mov ah,1
+ int 21h
+
+ mov bl,al
+
+ mov ah,1
+ int 21h
+
+ mov cl,al
+
+
+
+ mov ah,2
+ mov dl,0dh ; carriage return
+ int 21h
+ mov dl,0ah ;new line
+ int 21h
+
+ mov ax,@data ;initialize data segmet
+ mov ds,ax
+ lea dx,msg
+ mov ah,9
+ int 21h
+
+
+
+ lea dx,msg1
+ mov ah,9
+ int 21h
+
+ mov ah,2
+ mov dl,bl
+ int 21h
+
+ lea dx,msg1
+ mov ah,9
+ int 21h
+
+ lea dx,msg2
+ mov ah,9
+ int 21h
+
+
+ lea dx,msg1
+ mov ah,9
+ int 21h
+
+ mov ah,2
+ mov dl,cl
+ int 21h
+
+
+ lea dx,msg1
+ mov ah,9
+ int 21h
+
+
+ lea dx,msg3
+ mov ah,9
+ int 21h
+
+ lea dx,msg1
+ mov ah,9
+ int 21h
+
+
+ add bl,cl ;sum
+
+ sub bl,48d ;convert to ascii number
+
+ mov dl,bl
+ mov ah,2
+ int 21h
+
+
+ mov ah,4ch
+ int 21h
+
+
+ main endp
+ end main
